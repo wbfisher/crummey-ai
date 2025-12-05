@@ -52,18 +52,29 @@ export default function NoticesPage() {
         body: JSON.stringify({ notice_ids: [noticeId] }),
       });
 
-      if (res.ok) {
-        // Update local state
-        setNotices((prev) =>
-          prev.map((n) =>
-            n.id === noticeId
-              ? { ...n, status: 'sent', sent_at: new Date().toISOString() }
-              : n
-          )
-        );
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(`Failed to send: ${data.error || 'Unknown error'}`);
+        return;
       }
+
+      if (data.data?.failed > 0) {
+        alert(`Send failed: ${data.data.errors?.join(', ') || 'Unknown error'}`);
+        return;
+      }
+
+      // Update local state on success
+      setNotices((prev) =>
+        prev.map((n) =>
+          n.id === noticeId
+            ? { ...n, status: 'sent', sent_at: new Date().toISOString() }
+            : n
+        )
+      );
     } catch (err) {
       console.error('Failed to send notice:', err);
+      alert(`Network error: ${err}`);
     } finally {
       setSending(null);
     }
