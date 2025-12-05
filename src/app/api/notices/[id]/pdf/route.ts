@@ -66,7 +66,10 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     // Create filename
     const filename = `crummey-notice-${notice.recipient_name.replace(/[^a-zA-Z0-9]/g, '-')}-${notice.notice_date}.pdf`;
 
-    return new NextResponse(pdfBuffer, {
+    // Convert Buffer to Uint8Array for NextResponse compatibility
+    const uint8Array = new Uint8Array(pdfBuffer);
+
+    return new NextResponse(uint8Array, {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `attachment; filename="${filename}"`,
