@@ -12,6 +12,7 @@
     "db:gen-types": "npx supabase gen types typescript --project-id $SUPABASE_PROJECT_ID > src/types/database.ts"
   },
   "dependencies": {
+    "@react-pdf/renderer": "^4.0.0",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.47.10",
     "next": "14.2.21",
