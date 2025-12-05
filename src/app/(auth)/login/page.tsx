@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { createClient } from '@/lib/supabase/client';
 
 export default function LoginPage() {
@@ -40,7 +41,14 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
-          <h1 className="text-center text-3xl font-bold text-gray-900">
+          <Image
+            src="/logo.png"
+            alt="Crummey Logo"
+            width={64}
+            height={64}
+            className="mx-auto"
+          />
+          <h1 className="mt-4 text-center text-3xl font-bold text-gray-900">
             Crummey Notice Manager
           </h1>
           <h2 className="mt-2 text-center text-sm text-gray-600">
