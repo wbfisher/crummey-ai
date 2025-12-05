@@ -1,4 +1,4 @@
-import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { createServerSupabaseClient, createAdminClient } from '@/lib/supabase/server';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
@@ -14,14 +14,16 @@ export async function GET(request: Request) {
       // Check if profile exists, create if not
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
-        const { data: profile } = await supabase
+        // Use admin client to bypass RLS for profile creation
+        const adminClient = createAdminClient();
+        const { data: profile } = await adminClient
           .from('profiles')
           .select('id')
           .eq('id', user.id)
           .single();
 
         if (!profile) {
-          await supabase.from('profiles').insert({
+          await adminClient.from('profiles').insert({
             id: user.id,
             email: user.email!,
           });
